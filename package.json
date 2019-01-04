@@ -12,10 +12,15 @@
   "dependencies": {
     "@reach/router": "^1.2.1",
     "axios": "^0.18.0",
+    "decamelize": "^2.0.0",
+    "gray-matter": "^4.0.1",
+    "lodash": "^4.17.11",
+    "marked": "^0.6.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
-    "react-static": "^6.0.18"
+    "react-static": "^6.0.18",
+    "slug": "^0.9.3"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
