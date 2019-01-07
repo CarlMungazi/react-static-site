@@ -1,3 +1,12 @@
 {
-  "presets": ["react-static/babel-preset.js"]
+  "extends": "react-static/.babelrc",
+  "plugins": [
+    ["babel-plugin-module-resolver", {
+      "alias": {
+        "Content": "./content/",
+      },
+    }],
+    "babel-plugin-import-glob",
+    "babel-plugin-transform-md-import-to-string",
+  ],
 }

@@ -4,14 +4,10 @@ import slug from 'slug'
 import decamelize from 'decamelize'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
-
-import cardio from './src/content/topics/cardiovascular.md'
-import resp from './src/content/topics/respiratory.md'
-const content = [cardio, resp];
+import * as content from './src/content/topics/*.md'
 
 function processMarkdown (markdown, key) {
   const { content, data } = grayMatter(markdown)
-  console.log(content)
   const html = marked(content)
   return {
     content: html,
@@ -22,11 +18,13 @@ function processMarkdown (markdown, key) {
 
 function mapTopicsFrontMatter({
   title,
-  description
+  description,
+  content
 }) {
   return {
     title,
-    description
+    description,
+    content
   }
 }
 
@@ -37,10 +35,10 @@ function toSlug (str) {
 async function getTopics () {
   const topicsDetailsRaw = map(content, processMarkdown)
   const topicsDetails = await Promise.all(map(topicsDetailsRaw, mapTopicsFrontMatter))
-
   const topics = topicsDetails.map(topic => {
     const slug = toSlug(topic.title)
-    return pickBy({...slug}, val => val)
+
+    return pickBy({...topic}, val => val)
   })
 
   return topics
@@ -52,10 +50,12 @@ export default {
     title: 'PA Reference',
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
+    // const { data: posts } = await axios.get(
+    //   'https://jsonplaceholder.typicode.com/posts'
+    // )
+
     const topics = await getTopics();
+    
     return [
       {
         path: '/',
@@ -66,23 +66,23 @@ export default {
           }
         }
       },
-      {
-        path: '/blog',
-        getData: () => ({
-          posts,
-        }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          component: 'src/containers/Post',
-          getData: () => ({
-            post,
-          }),
-        })),
-      },
+      // {
+      //   path: '/blog',
+      //   getData: () => ({
+      //     posts,
+      //   }),
+      //   children: posts.map(post => ({
+      //     path: `/post/${post.id}`,
+      //     component: 'src/containers/Post',
+      //     getData: () => ({
+      //       post,
+      //     }),
+      //   })),
+      // },
       {
         path: 'topics',
         children: topics.map(topic => ({
-          path: topic.slug,
+          path: topic,
           component: 'src/containers/Topic',
           getData: () => ({
             ...topic
