@@ -35,12 +35,12 @@ function toSlug (str) {
 async function getTopics () {
   const topicsDetailsRaw = map(content, processMarkdown)
   const topicsDetails = await Promise.all(map(topicsDetailsRaw, mapTopicsFrontMatter))
+
   const topics = topicsDetails.map(topic => {
-    const slug = toSlug(topic.title)
-
-    return pickBy({...topic}, val => val)
+    const slug = { slug: toSlug(topic.title) }
+    return pickBy({...topic, ...slug}, val => val)
   })
-
+  
   return topics
 }
 
@@ -82,7 +82,7 @@ export default {
       {
         path: 'topics',
         children: topics.map(topic => ({
-          path: topic,
+          path: topic.slug,
           component: 'src/containers/Topic',
           getData: () => ({
             ...topic
