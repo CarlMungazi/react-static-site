@@ -1,17 +1,14 @@
 import React from 'react'
-import { Router } from 'react-static'
-import Routes from 'react-static-routes'
-import { hot } from 'react-hot-loader'
-
+import { Root, Routes } from 'react-static'
 
 import './app.css'
 
 const App = () => (
-  <Router>
+  <Root>
     <div className="content">
       <Routes />
     </div>
-  </Router>
+  </Root>
 )
 
-export default hot(module)(App)
+export default App

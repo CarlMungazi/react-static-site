@@ -1,21 +1,31 @@
 import React from 'react'
-import { RouteData } from 'react-static'
+import { SiteData, RouteData } from 'react-static'
 
-const Home = () => (
-  <RouteData render={({ topics = [] }) => {
-    return (
-      <div>
-      {
-        topics.map(topic => {
-          return (
-            <p>topic</p>
-          )
-        })
-      }
-      </div>
-    )
-  }}  
-  />
-)
-
-export default Home
+export default () => {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <SiteData>
+        {({ siteTitle }) => (
+          <div>
+            Welcome to {siteTitle}
+          </div>
+        )}
+      </SiteData>
+      <RouteData>
+        {
+          ({ categories }) => {
+            
+            return (
+              <div>
+                {
+                  categories.map( (category) => {
+                    return (<ul> <li>{ category } </li></ul>)
+                  })
+                }
+              </div>
+          )}
+        }
+      </RouteData>
+    </div>
+  )
+}
