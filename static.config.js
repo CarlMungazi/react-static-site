@@ -35,7 +35,7 @@ function toSlug (str) {
 
 // TO DO: get folder names from and create array of category names
 function getCategories () {
-  // TO DO: investigate if it is better to use async readdir
+  // TO DO: use async readdir
   const categories = fs.readdirSync('./src/content/', (err, files) => {
     return files
   })

@@ -1,16 +1,11 @@
 import React from 'react'
-import { SiteData, RouteData } from 'react-static'
+import { RouteData } from 'react-static'
+
+import CategoryCard from '../components/Cards/CategoryCard'
 
 export default () => {
   return (
     <div style={{ textAlign: 'center' }}>
-      <SiteData>
-        {({ siteTitle }) => (
-          <div>
-            Welcome to {siteTitle}
-          </div>
-        )}
-      </SiteData>
       <RouteData>
         {
           ({ categories }) => {
@@ -19,7 +14,7 @@ export default () => {
               <div>
                 {
                   categories.map( (category) => {
-                    return (<ul> <li>{ category } </li></ul>)
+                    return <CategoryCard category={category} />
                   })
                 }
               </div>
