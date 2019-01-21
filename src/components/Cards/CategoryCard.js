@@ -1,18 +1,33 @@
 import React from 'react'
-import styled from 'styled-components'
 
-export default ({ category }) => {  
+export default ({ category, reverse, index }) => {
   return (
-    <article className="br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw5 center">
-      <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
-      <div className="pa2 ph3-ns pb3-ns">
-        <div className="dt w-100 mt1">
-          <div className="dtc">{ category }</div>
+    <article className={`${index ? "bt" : ""} bb b--black-10`}>
+      <a className="db pv4 ph3 ph0-l no-underline black dim">
+        <div className="flex flex-column flex-row-ns">
+          { !reverse ?
+            [ <div className="w-100 w-60-ns pr3-ns">
+                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category }</h1>
+                <p className="f6 f5-l lh-copy">
+                  This is even.
+                </p>
+              </div>,
+              <div className="pl3-ns mb4 mb0-ns w-100 w-40-ns">
+                <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
+              </div> ]
+            :
+            [ <div className="pr3-ns mb4 mb0-ns w-100 w-40-ns">
+                <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
+              </div>, 
+              <div className="w-100 w-60-ns pl3-ns">
+                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category }</h1>
+                <p className="f6 f5-l lh-copy">
+                  This is odd.
+                </p>
+              </div> ]
+          }
         </div>
-        <p className="f6 lh-copy measure mt2 mid-gray">
-          This is where the description appears.
-        </p>
-      </div>
+      </a>
     </article>
   )
 }

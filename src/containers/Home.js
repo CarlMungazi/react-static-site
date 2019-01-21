@@ -5,22 +5,28 @@ import CategoryCard from '../components/Cards/CategoryCard'
 
 export default () => {
   return (
-    <div style={{ textAlign: 'center' }}>
+    <section className="mw7 center avenir">
       <RouteData>
         {
           ({ categories }) => {
-            
             return (
               <div>
                 {
-                  categories.map( (category) => {
-                    return <CategoryCard category={category} />
+                  categories.map( (category, idx) => {
+                    return ( 
+                      <CategoryCard 
+                        index={idx} 
+                        key={idx} 
+                        reverse={ idx % 2 == 0 } 
+                        category={category} 
+                      /> 
+                    )
                   })
                 }
               </div>
           )}
         }
       </RouteData>
-    </div>
+    </section>
   )
 }
