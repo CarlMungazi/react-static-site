@@ -1,5 +1,5 @@
 ---
-title: Primary Hypertension
+title: Cardiogenic Shock
 description: It's all about the heart
 ---
 

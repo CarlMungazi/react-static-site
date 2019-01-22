@@ -1,5 +1,5 @@
 ---
-title: Respiratory
+title: Candidiasis
 description: It's all about the breathing
 ---
 

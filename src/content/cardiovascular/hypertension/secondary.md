@@ -1,5 +1,5 @@
 ---
-title: Primary Hypertension
+title: Secondary Hypertension
 description: It's all about the heart
 ---
 
