@@ -6,16 +6,18 @@ import slug from 'slug'
 import decamelize from 'decamelize'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
-import * as topicsContent from './src/content/topics/*.md'
+
+import * as exampleCondition from './src/content/cardiovascular/hypertension/accelerated.md'
 
 const readdir = promisify(fs.readdir);
+const readFile = promisify(fs.readFile);
 
 function processMarkdown (markdown, key) {
   const { content, data } = grayMatter(markdown)
   const html = marked(content)
   return {
     content: html,
-    key: decamelize(key, '-'),
+    // key: decamelize(key, '-'),
     ...data
   }
 }
@@ -36,37 +38,52 @@ function toSlug (str) {
   return slug(str.toLowerCase());
 }
 
-async function getConditions () {
-  const conditionDetailsRaw = map(topicsContent, processMarkdown)
-  const conditionDetails = await Promise.all(map(conditionDetailsRaw, mapTopicsFrontMatter))
+async function createConditionContent (conditionsContent) {
+  // const conditionDetailsRaw = map(conditionsContent, processMarkdown)
+  // const conditionDetails = await Promise.all(map(conditionDetailsRaw, mapTopicsFrontMatter))
 
-  const topics = topicsDetails.map(topic => {
-    const slug = { slug: toSlug(topic.title) }
-    return pickBy({...topic, ...slug}, val => val)
-  })
+  // const conditions = conditionDetails.map(topic => {
+  //   const slug = { slug: toSlug(topic.title) }
+  //   return pickBy({...topic, ...slug}, val => val)
+  // })
   
-  return topics
+  // return conditions
 }
 
 async function getConditionList (topic) {
-  console.log(topic)
-  const conditionList = await readdir(`./src/content/${topic.parent}/${topic}/`);
+  const extractMarkdown = async function (file) {
+    const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`)
+    const fileFrontMatter = grayMatter(fileData)
+    const fileDataObject = { link: `${file.slice(0, file.length - 3)}`, name: fileFrontMatter.data.title, markdown: grayMatter(fileData) }
+    return fileDataObject;
+  }
 
-  const sortedConditions = conditionList.map((condition, idx) => {
-    return { parent: topic, name: condition, content: [] }
-  })
+  const conditionList = await readdir(`./src/content/${topic.parent}/${topic.name}`);
 
-  return sortedConditions;
+  const resolvedConditionList = async function () {
+    const newFilesPromises = conditionList.map(extractMarkdown);
+    return await Promise.all(newFilesPromises);
+  }
+
+  return await resolvedConditionList()
 }
 
 async function getTopicsList(category) {
   const topicsList = await readdir(`./src/content/${category}`);
-  
-  const conditionList = topicsList.map(getConditionList);
-  const sortedTopics = topicsList.map((topic, idx) => {
-    return { parent: category, name: topic, conditions: conditionList[idx] }
+  const sortedTopicsList = topicsList.map((topic) => {
+    return { parent: category, name: topic }
   })
+
+  const resolvedConditionList = async function () {
+    const list = sortedTopicsList.map(getConditionList);
+    return await Promise.all(list)
+  }
   
+  const finalConditionList = await resolvedConditionList()
+
+  const sortedTopics = topicsList.map((topic, idx) => {
+    return { parent: category, name: topic, conditions: finalConditionList[idx] }
+  })
 
   return sortedTopics
 }
@@ -75,7 +92,7 @@ async function sortCategories (categories) {
   const topicsListPromises = categories.map(getTopicsList);
 
   const resolvedTopicsList = await Promise.all(topicsListPromises)
-  
+
   const sortedCategories = categories.map((category, idx) => {
     return { name: category, topics: resolvedTopicsList[idx] }
   });
@@ -128,7 +145,14 @@ export default {
             component: 'src/containers/Topic/Topic',
             getData: async () => ({
               topic
-            })
+            }),
+            children: topic.conditions.map( condition => ({
+              path: `${condition.link}`,
+              component: 'src/containers/Condition/Condition',
+              getData: async () => ({
+                condition
+              })
+            }))
           })),
         })),  
       },

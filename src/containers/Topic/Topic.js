@@ -8,9 +8,9 @@ export default withRouteData(({ topic }) => (
     <br />
     <h3>{topic.name}</h3>
     {
-      // topic.conditions.map((condition, idx) => {
-      //   return <Link to={`/${category.name}/${topic.name}/${condition.name}`}><li key={idx}>{condition.name}</li></Link>
-      // })
+      topic.conditions.map((condition, idx) => {
+        return <Link to={`/${topic.parent}/${topic.name}/${condition.link}`}><li key={idx}>{condition.name}</li></Link>
+      })
     }
   </div>
 ))

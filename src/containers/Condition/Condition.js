@@ -6,6 +6,6 @@ export default withRouteData(({ condition }) => (
   <div>
     <Link to="/">{'<'} Back</Link>
     <br />
-    <h3>{condition}</h3>
+    <p dangerouslySetInnerHTML={{ __html: condition.markdown.content }} />
   </div>
 ))

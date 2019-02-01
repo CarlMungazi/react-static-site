@@ -1,5 +1,5 @@
 ---
-title: Isolated Systolic
+title: Iatrogenic Hypertension
 description: It's all about the heart
 ---
 
