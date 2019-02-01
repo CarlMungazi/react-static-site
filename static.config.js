@@ -100,6 +100,8 @@ async function getCategories () {
 export default {
   getSiteData: () => ({
     siteTitle: 'PA Reference',
+    siteTitleTag: 'Reference Guide For Matrix Of Conditions',
+    siteTag: 'Your quick guide to the matrix of conditions'
   }),
   getRoutes: async () => {
     const { data: posts } = await axios.get(
