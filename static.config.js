@@ -54,7 +54,7 @@ async function getConditionList (topic) {
   const extractMarkdown = async function (file) {
     const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`)
     const fileFrontMatter = grayMatter(fileData)
-    const fileDataObject = { link: `${file.slice(0, file.length - 3)}`, name: fileFrontMatter.data.title, markdown: grayMatter(fileData) }
+    const fileDataObject = { link: `${file.slice(0, file.length - 3)}`, name: fileFrontMatter.data.title, markdown: marked(fileFrontMatter.content) }
     return fileDataObject;
   }
 
