@@ -8,7 +8,9 @@ import './app.css'
 const App = () => (
   <Root>
     <Header />
-      <Routes />
+      <section className="mw7 center avenir">
+        <Routes />
+      </section>
   </Root>
 )
 

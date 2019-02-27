@@ -1,0 +1,44 @@
+{
+  "congenital-heart-disease": {
+    "description": "This is about the heart",
+    "title": "Congenital heart disease"
+  },
+
+
+  "mouth-and-throat-disorders": {
+    "description": "This is about the mouth and throat",
+    "title": "Mouth and throat disorders"
+  },
+
+  "breast": {
+    "description": "This is about breasts",
+    "title": "Breast"
+  },
+
+  "gallbladder-and-biliary-tree": {
+    "description": "This is about the gallbladder and biliary tree",
+    "title": "Gallbladder and biliary tree"
+  },
+  "small-intestine": {
+    "description": "This is about the small intestine",
+    "title": "Small intestine"
+  },
+
+  "infectious-respiratory-disorders": {
+    "description": "This is about infectious respiratory disorders",
+    "title": "Infectious respiratory disorders"
+  },
+  "obstructive-pulmonary-disease": {
+    "description": "This is about obstructive pulmonary disease",
+    "title": "Obstructive pulmonary disease"
+  },
+  "pleural-diseases": {
+    "description": "This is about pleural diseases",
+    "title": "Pleural diseases"
+  },
+
+  "sexual-dysfunction": {
+    "description": "This is about sexual dysfunction",
+    "title": "Sexual dysfunction"
+  }
+}

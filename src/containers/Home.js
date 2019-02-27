@@ -5,30 +5,28 @@ import CategoryCard from '../components/Cards/CategoryCard'
 
 export default () => {
   return (
-    <section className="mw7 center avenir">
-      <RouteData>
-        {
-          ({ categories }) => {
-            return (
-              <div>
-                {
-                  categories.map( (category, idx) => {
-                    return ( 
-                      <Link to={`/${category.name}`}>
-                        <CategoryCard 
-                          index={idx} 
-                          key={idx} 
-                          reverse={ idx % 2 == 0 } 
-                          category={category} 
-                        />
-                      </Link>
-                    )
-                  })
-                }
-              </div>
-          )}
-        }
-      </RouteData>
-    </section>
+    <RouteData>
+      {
+        ({ categories }) => {
+          return (
+            <div>
+              {
+                categories.map( (category, idx) => {
+                  return ( 
+                    <Link to={`/${category.name}`}>
+                      <CategoryCard 
+                        index={idx} 
+                        key={idx} 
+                        reverse={ idx % 2 == 0 } 
+                        category={category} 
+                      />
+                    </Link>
+                  )
+                })
+              }
+            </div>
+        )}
+      }
+    </RouteData>
   )
 }

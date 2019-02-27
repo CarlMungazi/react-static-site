@@ -7,9 +7,9 @@ export default ({ category, reverse, index }) => {
         <div className="flex flex-column flex-row-ns">
           { !reverse ?
             [ <div className="w-100 w-60-ns pr3-ns">
-                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.name }</h1>
+                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.data.title }</h1>
                 <p className="f6 f5-l lh-copy">
-                  This is even.
+                { category.data.description }
                 </p>
               </div>,
               <div className="pl3-ns mb4 mb0-ns w-100 w-40-ns">
@@ -20,9 +20,9 @@ export default ({ category, reverse, index }) => {
                 <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
               </div>, 
               <div className="w-100 w-60-ns pl3-ns">
-                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.name }</h1>
+                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.data.title }</h1>
                 <p className="f6 f5-l lh-copy">
-                  This is odd.
+                { category.data.description }
                 </p>
               </div> ]
           }

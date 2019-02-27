@@ -5,17 +5,11 @@ import slug from 'slug'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
 
+import categoryDescs from './src/utils/category-descriptions';
+import topicDescs from './src/utils/topic-descriptions';
+
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
-
-function processMarkdown (markdown, key) {
-  const { content, data } = grayMatter(markdown)
-  const html = marked(content)
-  return {
-    content: html,
-    ...data
-  }
-}
 
 function mapTopicsFrontMatter({
   title,
@@ -72,7 +66,7 @@ async function getTopicsList(category) {
   const finalConditionList = await resolvedConditionList()
 
   const sortedTopics = topicsList.map((topic, idx) => {
-    return { parent: category, name: topic, conditions: finalConditionList[idx] }
+    return { parent: category, name: topic, data: topicDescs[topic], conditions: finalConditionList[idx] }
   })
 
   return sortedTopics
@@ -84,7 +78,7 @@ async function sortCategories (categories) {
   const resolvedTopicsList = await Promise.all(topicsListPromises)
 
   const sortedCategories = categories.map((category, idx) => {
-    return { name: category, topics: resolvedTopicsList[idx] }
+    return { name: category, data: categoryDescs[category], topics: resolvedTopicsList[idx] }
   });
   
   return sortedCategories

@@ -2,7 +2,6 @@
 title: Patent ductus arteriosus
 description: It's all about the heart
 ---
-## Description
 
 PDA is described by the failure to close of the connection between the main pulmonary artery and the aorta called ductus arteriosus. It usually closes within 2-3 days of life.
 
