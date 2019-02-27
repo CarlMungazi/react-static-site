@@ -111,11 +111,7 @@ export default {
     siteTag: 'Your quick guide to the matrix of conditions'
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-    const categories = await getCategories();
-    
+    const categories = await getCategories();   
     
     return [
       {
@@ -146,19 +142,6 @@ export default {
           })),
         })),  
       },
-      {
-        path: '/blog',
-        getData: () => ({
-          posts,
-        }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          component: 'src/containers/Post',
-          getData: () => ({
-            post,
-          }),
-        })),
-      }
     ]
   },
 }
