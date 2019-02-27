@@ -1,13 +1,9 @@
 import axios from 'axios'
 import fs from 'fs'
 import { promisify } from 'util';
-import { map, pickBy } from 'lodash'
 import slug from 'slug'
-import decamelize from 'decamelize'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
-
-import * as exampleCondition from './src/content/cardiovascular/hypertension/accelerated.md'
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
@@ -17,7 +13,6 @@ function processMarkdown (markdown, key) {
   const html = marked(content)
   return {
     content: html,
-    // key: decamelize(key, '-'),
     ...data
   }
 }
@@ -38,23 +33,18 @@ function toSlug (str) {
   return slug(str.toLowerCase());
 }
 
-async function createConditionContent (conditionsContent) {
-  // const conditionDetailsRaw = map(conditionsContent, processMarkdown)
-  // const conditionDetails = await Promise.all(map(conditionDetailsRaw, mapTopicsFrontMatter))
-
-  // const conditions = conditionDetails.map(topic => {
-  //   const slug = { slug: toSlug(topic.title) }
-  //   return pickBy({...topic, ...slug}, val => val)
-  // })
-  
-  // return conditions
-}
-
 async function getConditionList (topic) {
   const extractMarkdown = async function (file) {
     const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`)
     const fileFrontMatter = grayMatter(fileData)
-    const fileDataObject = { link: `${file.slice(0, file.length - 3)}`, name: fileFrontMatter.data.title, markdown: marked(fileFrontMatter.content) }
+    
+    const fileDataObject = { 
+      name: `${file.slice(0, file.length - 3)}`, 
+      title: fileFrontMatter.data.title, 
+      markdown: marked(fileFrontMatter.content),
+      backLink: `${topic.parent}/${topic.name}`
+    }
+
     return fileDataObject;
   }
 
@@ -147,7 +137,7 @@ export default {
               topic
             }),
             children: topic.conditions.map( condition => ({
-              path: `${condition.link}`,
+              path: `${condition.name}`,
               component: 'src/containers/Condition/Condition',
               getData: async () => ({
                 condition

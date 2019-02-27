@@ -4,8 +4,8 @@ import { Link } from '@reach/router'
 
 export default withRouteData(({ condition }) => (
   <div>
-    <Link to="/">{'<'} Back</Link>
+    <Link to={`/${condition.backLink}`}>{'<'} Back</Link>
     <br />
-    <p dangerouslySetInnerHTML={{ __html: condition.markdown }} />
+    <div dangerouslySetInnerHTML={{ __html: condition.markdown }} />
   </div>
 ))
