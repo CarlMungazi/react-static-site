@@ -1,31 +1,32 @@
 import React from 'react'
-import { SiteData, RouteData } from 'react-static'
+import { RouteData } from 'react-static'
+import { Link } from '@reach/router'
+import CategoryCard from '../components/Cards/CategoryCard'
 
 export default () => {
   return (
-    <div style={{ textAlign: 'center' }}>
-      <SiteData>
-        {({ siteTitle }) => (
-          <div>
-            Welcome to {siteTitle}
-          </div>
+    <RouteData>
+      {
+        ({ categories }) => {
+          return (
+            <div>
+              {
+                categories.map( (category, idx) => {
+                  return ( 
+                    <Link to={`/${category.name}`}>
+                      <CategoryCard 
+                        index={idx} 
+                        key={idx} 
+                        reverse={ idx % 2 == 0 } 
+                        category={category} 
+                      />
+                    </Link>
+                  )
+                })
+              }
+            </div>
         )}
-      </SiteData>
-      <RouteData>
-        {
-          ({ categories }) => {
-            
-            return (
-              <div>
-                {
-                  categories.map( (category) => {
-                    return (<ul> <li>{ category } </li></ul>)
-                  })
-                }
-              </div>
-          )}
-        }
-      </RouteData>
-    </div>
+      }
+    </RouteData>
   )
 }

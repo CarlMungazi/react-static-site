@@ -1,21 +1,15 @@
 import axios from 'axios'
 import fs from 'fs'
-import { map, pickBy } from 'lodash'
+import { promisify } from 'util';
 import slug from 'slug'
-import decamelize from 'decamelize'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
-import * as topicsContent from './src/content/topics/*.md'
 
-function processMarkdown (markdown, key) {
-  const { content, data } = grayMatter(markdown)
-  const html = marked(content)
-  return {
-    content: html,
-    key: decamelize(key, '-'),
-    ...data
-  }
-}
+import categoryDescs from './src/utils/category-descriptions';
+import topicDescs from './src/utils/topic-descriptions';
+
+const readdir = promisify(fs.readdir);
+const readFile = promisify(fs.readFile);
 
 function mapTopicsFrontMatter({
   title,
@@ -33,72 +27,115 @@ function toSlug (str) {
   return slug(str.toLowerCase());
 }
 
-// TO DO: get folder names from and create array of category names
-function getCategories () {
-  // TO DO: investigate if it is better to use async readdir
-  const categories = fs.readdirSync('./src/content/', (err, files) => {
-    return files
-  })
-  
-  return categories
+async function getConditionList (topic) {
+  const extractMarkdown = async function (file) {
+    const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`)
+    const fileFrontMatter = grayMatter(fileData)
+    
+    const fileDataObject = { 
+      name: `${file.slice(0, file.length - 3)}`, 
+      title: fileFrontMatter.data.title, 
+      markdown: marked(fileFrontMatter.content),
+      backLink: `${topic.parent}/${topic.name}`
+    }
+
+    return fileDataObject;
+  }
+
+  const conditionList = await readdir(`./src/content/${topic.parent}/${topic.name}`);
+
+  const resolvedConditionList = async function () {
+    const newFilesPromises = conditionList.map(extractMarkdown);
+    return await Promise.all(newFilesPromises);
+  }
+
+  return await resolvedConditionList()
 }
 
-async function getTopics () {
-  const topicsDetailsRaw = map(topicsContent, processMarkdown)
-  const topicsDetails = await Promise.all(map(topicsDetailsRaw, mapTopicsFrontMatter))
-
-  const topics = topicsDetails.map(topic => {
-    const slug = { slug: toSlug(topic.title) }
-    return pickBy({...topic, ...slug}, val => val)
+async function getTopicsList(category) {
+  const topicsList = await readdir(`./src/content/${category}`);
+  const sortedTopicsList = topicsList.map((topic) => {
+    return { parent: category, name: topic }
   })
+
+  const resolvedConditionList = async function () {
+    const list = sortedTopicsList.map(getConditionList);
+    return await Promise.all(list)
+  }
   
-  return topics
+  const finalConditionList = await resolvedConditionList()
+
+  const sortedTopics = topicsList.map((topic, idx) => {
+    return { parent: category, name: topic, data: topicDescs[topic], conditions: finalConditionList[idx] }
+  })
+
+  return sortedTopics
 }
 
+async function sortCategories (categories) {
+  const topicsListPromises = categories.map(getTopicsList);
+
+  const resolvedTopicsList = await Promise.all(topicsListPromises)
+
+  const sortedCategories = categories.map((category, idx) => {
+    return { name: category, data: categoryDescs[category], topics: resolvedTopicsList[idx] }
+  });
+  
+  return sortedCategories
+}
+
+async function getCategories () {
+  let categories;
+
+  try { 
+    categories = await readdir('./src/content');
+  } catch (err) {
+    // do something
+  }
+
+  const finalCategories = await sortCategories(categories);
+  
+  return finalCategories;
+}
 
 export default {
   getSiteData: () => ({
     siteTitle: 'PA Reference',
+    siteTitleTag: 'Reference Guide For Matrix Of Conditions',
+    siteTag: 'Your quick guide to the matrix of conditions'
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-
-    const topics = await getTopics();
-    const categories = await getCategories();
+    const categories = await getCategories();   
     
     return [
       {
         path: '/',
         component: 'src/containers/Home',
-        getData: () => ({
+        getData: async () => ({
           categories
         }),
-      },
-      {
-        path: '/blog',
-        getData: () => ({
-          posts,
-        }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          component: 'src/containers/Post',
-          getData: () => ({
-            post,
+        children: categories.map( category => ({
+          path: `${category.name}`,
+          component: 'src/containers/Category/Category',
+          getData: async () => ({
+            category
           }),
-        })),
+          children: category.topics.map( topic => ({
+            path: `${topic.name}`,
+            component: 'src/containers/Topic/Topic',
+            getData: async () => ({
+              topic
+            }),
+            children: topic.conditions.map( condition => ({
+              path: `${condition.name}`,
+              component: 'src/containers/Condition/Condition',
+              getData: async () => ({
+                condition
+              })
+            }))
+          })),
+        })),  
       },
-      // {
-      //   path: 'topics',
-      //   children: topics.map(topic => ({
-      //     path: topic.slug,
-      //     component: 'src/containers/Topic',
-      //     getData: () => ({
-      //       ...topic
-      //     })
-      //   }))
-      // }
     ]
   },
 }
