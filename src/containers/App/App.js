@@ -1,9 +1,9 @@
-import React from 'react'
-import { Root, Routes } from 'react-static'
-import Header from './Header'
-import 'tachyons'
+import React from 'react';
+import { Root, Routes } from 'react-static';
+import Header from './Header';
+import 'tachyons';
 
-import './app.css'
+import './app.css';
 
 const App = () => (
   <Root>

@@ -1,7 +1,5 @@
-import axios from 'axios'
 import fs from 'fs'
 import { promisify } from 'util';
-import slug from 'slug'
 import grayMatter from 'gray-matter'
 import marked from 'marked'
 
@@ -11,26 +9,10 @@ import topicDescs from './src/utils/topic-descriptions';
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 
-function mapTopicsFrontMatter({
-  title,
-  description,
-  content
-}) {
-  return {
-    title,
-    description,
-    content
-  }
-}
-
-function toSlug (str) {
-  return slug(str.toLowerCase());
-}
-
 async function getConditionList (topic) {
   const extractMarkdown = async function (file) {
-    const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`)
-    const fileFrontMatter = grayMatter(fileData)
+    const fileData = await readFile(`./src/content/${topic.parent}/${topic.name}/${file}`);
+    const fileFrontMatter = grayMatter(fileData);
     
     const fileDataObject = { 
       name: `${file.slice(0, file.length - 3)}`, 
@@ -49,7 +31,7 @@ async function getConditionList (topic) {
     return await Promise.all(newFilesPromises);
   }
 
-  return await resolvedConditionList()
+  return await resolvedConditionList();
 }
 
 async function getTopicsList(category) {

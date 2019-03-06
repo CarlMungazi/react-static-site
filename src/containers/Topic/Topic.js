@@ -1,6 +1,6 @@
-import React from 'react'
-import { withRouteData } from 'react-static'
-import { Link } from '@reach/router'
+import React from 'react';
+import { withRouteData } from 'react-static';
+import { Link } from '@reach/router';
 
 export default withRouteData(({ topic }) => (
   <div>
@@ -12,7 +12,14 @@ export default withRouteData(({ topic }) => (
     <ul className="list pl0 measure center">
       {
         topic.conditions.map((condition, idx) => {
-          return <Link className="link hover-mid-gray" to={`/${topic.parent}/${topic.name}/${condition.name}`}><li className="lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30" key={idx}>{condition.title}</li></Link>
+          return ( 
+            <Link 
+              className="link hover-mid-gray" 
+              to={`/${topic.parent}/${topic.name}/${condition.name}`}
+            >
+              <li className="lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30" key={idx}>{condition.title}</li>
+            </Link>
+          )
         })
       }
     </ul>
