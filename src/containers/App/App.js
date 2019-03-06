@@ -1,14 +1,15 @@
 import React from 'react';
 import { Root, Routes } from 'react-static';
-import Header from './Header';
 import 'tachyons';
 
-import './app.css';
+import Header from './Header';
+import AppWrapper from '../../theme/globalStyle';
 
 const App = () => (
   <Root>
+    <AppWrapper />
     <Header />
-      <section className="mw7 center avenir">
+      <section className="mh4">
         <Routes />
       </section>
   </Root>
