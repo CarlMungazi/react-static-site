@@ -1,6 +1,6 @@
-import React from 'react'
-import { Head, SiteData } from 'react-static'
-import styled from 'styled-components'
+import React from 'react';
+import { Head, SiteData } from 'react-static';
+import styled from 'styled-components';
 
 const BackgroundWrapper = styled.div.attrs({
   className: 'cover bg-left bg-center-l'
