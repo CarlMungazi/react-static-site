@@ -9,15 +9,12 @@ export default () => {
       {
         ({ categories }) => {
           return (
-            <div>
+            <div className="flex flex-row flex-wrap justify-center">
               {
-                categories.map( (category, idx) => {
+                categories.map(category => {
                   return ( 
-                    <Link to={`/${category.name}`}>
-                      <CategoryCard 
-                        index={idx} 
-                        key={idx} 
-                        reverse={ idx % 2 == 0 } 
+                    <Link className="" to={`/${category.name}`} key={category.name}>
+                      <CategoryCard                         
                         category={category} 
                       />
                     </Link>

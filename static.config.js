@@ -18,7 +18,8 @@ async function getConditionList (topic) {
       name: `${file.slice(0, file.length - 3)}`, 
       title: fileFrontMatter.data.title, 
       markdown: marked(fileFrontMatter.content),
-      backLink: `${topic.parent}/${topic.name}`
+      backLink: `${topic.parent}/${topic.name}`,
+      parent: topic.name
     }
 
     return fileDataObject;
@@ -84,7 +85,7 @@ export default {
   getSiteData: () => ({
     siteTitle: 'PA Reference',
     siteTitleTag: 'Reference Guide For Matrix Of Conditions',
-    siteTag: 'Your quick guide to the matrix of conditions'
+    siteTag: 'Your guide to the matrix of conditions'
   }),
   getRoutes: async () => {
     const categories = await getCategories();   

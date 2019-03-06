@@ -1,32 +1,15 @@
 import React from 'react'
 
-export default ({ category, reverse, index }) => {
+export default ({ category }) => {
   return (
-    <article className={`${index ? "bt" : ""} bb b--black-10`}>
-      <a className="db pv4 ph3 ph0-l no-underline black dim">
-        <div className="flex flex-column flex-row-ns">
-          { !reverse ?
-            [ <div className="w-100 w-60-ns pr3-ns">
-                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.data.title }</h1>
-                <p className="f6 f5-l lh-copy">
-                { category.data.description }
-                </p>
-              </div>,
-              <div className="pl3-ns mb4 mb0-ns w-100 w-40-ns">
-                <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
-              </div> ]
-            :
-            [ <div className="pr3-ns mb4 mb0-ns w-100 w-40-ns">
-                <img src="http://placekitten.com/g/600/300" className="db w-100 br2 br--top" alt="" />
-              </div>, 
-              <div className="w-100 w-60-ns pl3-ns">
-                <h1 className="f3 fw1 baskerville mt0 lh-title">{ category.data.title }</h1>
-                <p className="f6 f5-l lh-copy">
-                { category.data.description }
-                </p>
-              </div> ]
-          }
+    <article className='tc w5 mr3 bg-white br3 pa3 pa3-ns ba b--black-10 mb3'>
+      <a className="db pv2 ph3 ph0-l no-underline black dim">
+        <div>
+          <img src="http://tachyons.io/img/avatar_1.jpg" className="br-100 h3 w3 dib" title="" />
+          <h1 className="f4">{ category.data.title }</h1>
+          <hr className="mw3 bb bw1 b--black-10" />
         </div>
+        <p className="lh-copy measure center f6 black-70"> { category.data.description } </p>
       </a>
     </article>
   )
