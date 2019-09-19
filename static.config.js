@@ -11,6 +11,10 @@ export default {
         path: '/',
         component: 'src/containers/Home'
       },
+      {
+        path: '404',
+        component: 'src/pages/404',
+      },
     ]
   },
 }

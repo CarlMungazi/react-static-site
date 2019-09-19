@@ -1,10 +1,8 @@
 import React from 'react'
-import { RouteData } from 'react-static'
+import { withSiteData } from 'react-static'
 
-export default () => {
-  return (
-    <RouteData>
-      <div>Hello</div>
-    </RouteData>
-  )
-}
+export default withSiteData(() => (
+  <div>
+    <h1>Welcome to</h1>
+  </div>
+))
